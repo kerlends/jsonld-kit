@@ -1,0 +1,24 @@
+{
+  "name": "jsonld-kit",
+  "private": true,
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "clean": "pnpm -r exec rm -rf dist && pnpm -C packages/schema-types exec rm -rf src/generated && pnpm -C packages/schema-types exec rm -rf src/generated || true",
+    "gen": "pnpm -C packages/codegen gen",
+    "build": "pnpm gen && pnpm -r --filter \"./packages/*\" --filter \"!@jsonld-kit/codegen\" build",
+    "typecheck": "pnpm -r --filter \"./packages/*\" --filter \"!@jsonld-kit/codegen\" typecheck",
+
+    "prepublish:check": "pnpm build && pnpm typecheck",
+
+    "version:patch": "pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" version patch --no-git-tag-version",
+    "version:minor": "pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" version minor --no-git-tag-version",
+    "version:major": "pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" version major --no-git-tag-version",
+
+    "publish:dry": "pnpm prepublish:check && pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" publish --dry-run --access public",
+    "publish:latest": "pnpm prepublish:check && pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" publish --access public",
+    "publish:next": "pnpm prepublish:check && pnpm -r --filter \"@jsonld-kit/*\" --filter \"!@jsonld-kit/codegen\" publish --tag next --access public"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
